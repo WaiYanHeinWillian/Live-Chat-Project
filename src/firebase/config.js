@@ -1,5 +1,6 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore'
+import 'firebase/compat/auth'
 
 const firebaseConfig = {
     apiKey: "AIzaSyDiwwwSovsSRsKsDkePF-2lcpLF_-2hS3k",
@@ -12,6 +13,7 @@ const firebaseConfig = {
 
   firebase.initializeApp(firebaseConfig);
   let db=firebase.firestore();
+  let auth=firebase.auth();
   let timeStamp=firebase.firestore.FieldValue.serverTimestamp;
 
-  export {db,timeStamp}
+  export {db,timeStamp,auth}
