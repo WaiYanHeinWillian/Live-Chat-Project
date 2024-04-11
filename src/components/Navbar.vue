@@ -1,8 +1,8 @@
 <template>
-  <nav>
+  <nav v-if="user">
     <div>
-        <p>Hi display name</p>
-        <p class="email">Logged in as email</p>
+        <p>Hi {{user.displayName}}</p>
+        <p class="email">Logged in as {{user.email}}</p>
     </div>
     <button v-on:click="logout">Logout</button>
   </nav>
@@ -11,9 +11,13 @@
 <script>
 import { ref } from 'vue'
 import { auth } from '../firebase/config'
+import getUser from '../composables/getUser'
 export default {
     setup(){
         let error=ref(null);
+
+        let {user}=getUser();
+
         let logout=async()=>{
             try{
                 await auth.signOut();
@@ -23,8 +27,9 @@ export default {
                 console.log(error.value)
             }
         }
+        
+    return {logout,user}
     
-    return {logout}
     }
 }
 </script>
