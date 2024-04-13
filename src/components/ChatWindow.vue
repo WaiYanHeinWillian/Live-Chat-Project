@@ -2,7 +2,7 @@
   <div class="chat-window">
     <div class="messages" v-for="messageData in messageDatas" :key="messageData.id">
         <div class="single">
-            <span class="created-at">{{messageData.created_At}}</span>
+            <span class="created-at">{{messageData.created_At.toDate()}}</span>
             <span class="name">{{messageData.name}}</span>
             <span class="message">{{messageData.message}}</span>
         </div>
@@ -22,7 +22,9 @@ export default {
             let results=[];
             snap.docs.forEach((doc)=>{
                 let document={id:doc.id,...doc.data()};
-                results.push(document);
+                if(doc.data().created_At){
+                    results.push(document);
+                }// doc.data().created_At && results.push(document);
             })
             
             messageDatas.value=results;
