@@ -1,8 +1,8 @@
 <template>
   <div class="chat-window">
-    <div class="messages" v-for="messageData in messageDatas" :key="messageData.id">
-        <div class="single">
-            <span class="created-at">{{messageData.created_At.toDate()}}</span>
+    <div class="messages">
+        <div class="single" v-for="messageData in formattedMessages" :key="messageData.id">
+            <span class="created-at">{{messageData.created_At}}</span>
             <span class="name">{{messageData.name}}</span>
             <span class="message">{{messageData.message}}</span>
         </div>
@@ -11,12 +11,20 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { db } from '../firebase/config'
+import {formatDistanceToNow} from 'date-fns'
 export default {
     setup(){
 
         let messageDatas=ref([]);
+
+        let formattedMessages=computed(()=>{
+            return messageDatas.value.map((msg)=>{
+                let formatTime=formatDistanceToNow(msg.created_At.toDate());
+                return {...msg,created_At:formatTime}
+            })
+        });
 
         db.collection('messages').orderBy("created_At").onSnapshot((snap)=>{
             let results=[];
@@ -29,7 +37,7 @@ export default {
             
             messageDatas.value=results;
         })
-        return{messageDatas};
+        return{messageDatas,formattedMessages};
     }
 }
 </script>
