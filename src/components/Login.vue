@@ -1,5 +1,5 @@
 <template>
-  <h1>Login</h1>
+  <h1>Login to my chatroom app</h1>
   <form v-on:submit.prevent="login">
     
     <input type="email" placeholder="Email" v-model="email">
